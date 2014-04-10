@@ -26,7 +26,8 @@ parser.add_argument(      "--no-ipv4",    dest="ipv4",                          
 parser.add_argument(      "--no-ipv6",    dest="ipv6",                                    action="store_false", help="turn off IPv6 scans")
 parser.add_argument(      "--no-summary", dest="summary",   default=True,                 action="store_false", help="suppress scan summary")
 parser.add_argument("-t", "--timestamp",  dest="timestamp", const="%Y-%m-%dT%H:%M:%S%z:", nargs="?",            help="add timestamps to output; optionally takes format string (default: %%Y-%%m-%%dT%%H:%%M:%%S%%z:)")
-parser.add_argument("--starttls",   dest="starttls",  default=None,                 action="store",       choices = ['smtp'],
+parser.add_argument("--starttls",   dest="starttls",  default=None,                 action="store",       choices = ['smtp', 'pop3', 'imap',
+                                                                                                                     'xmpp'],
                     help="Insert proper protocol stanzas to initiate STARTTLS")
 parser.add_argument("-p", "--ports",      dest="ports",     action="append",              nargs=1,              help="list of ports to be scanned (default: 443)")
 parser.add_argument("hostlist",                             default=["-"],                nargs="*",            help="list(s) of hosts to be scanned (default: stdin)")
@@ -179,6 +180,25 @@ def do_starttls(s):
             ack = s.recv(1024)
             if "220" in ack:
                 return True
+#    elif args.starttls == "imap":
+#        # receive greeting
+#        s.recv(1024)
+#        # start STARTTLS
+#        s.send("a001 STARTTLS\r\n")
+#        # receive confirmation
+#        if "a001 OK" in s.recv(1024):
+#            return True
+#        else:
+#            return False
+#    elif args.starttls == "pop3":
+#        # receive greeting
+#        s.recv(1024)
+#        # STARTTLS 
+#        s.send("STLS\r\n")
+#        if "+OK" in s.recv(1024):
+#            return True
+#        else:
+#            return False
     return False
 
 
